@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add User - Pharmacy Management Systems</title>
+    <link rel="stylesheet" type="text/css" href="./css/ms.css">
+    <link rel="stylesheet" href="./css/s.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./css/ta.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #content {
+            width: 90%;
+            max-width: 500px;
+            margin: auto;
+            height: fit-content;
+        }
+        #header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h4 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        form {
+            max-width: 100%;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input[type="submit"]:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div id="header">
+            <h1>Pharmacy Management System</h1>
+        </div>
+        <div id="main">
+            <h4>Add Manager</h4>
+            <hr/>
+            <form id="addManagerForm">
+                <label for="firstName">First Name:</label><br>
+                <input type="text" id="firstName" name="firstName" required><br>
+                <label for="lastName">Last Name:</label><br>
+                <input type="text" id="lastName" name="lastName" required><br>
+                <label for="staffId">Staff ID:</label><br>
+                <input type="text" id="staffId" name="staffId" required><br>
+                <label for="postalAddress">Postal Address:</label><br>
+                <input type="text" id="postalAddress" name="postalAddress"><br>
+                <label for="phone">Phone:</label><br>
+                <input type="text" id="phone" name="phone" required><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('addManagerForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Retrieve values from the form
+            const first_name = document.getElementById('firstName').value;
+            const last_name = document.getElementById('lastName').value;
+            const staff_id = document.getElementById('staffId').value;
+            const postal_address = document.getElementById('postalAddress').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const date = new Date().toISOString(); // Use current date as default
+
+            try {
+                // Send POST request to add new manager
+                const response = await fetch('http://localhost:3000/managers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        first_name,
+                        last_name,
+                        staff_id,
+                        postal_address,
+                        phone,
+                        email,
+                        username,
+                        password,
+                        date
+                    })
+                });
+                const data = await response.json();
+                console.log('New manager added:', data);
+
+                // Redirect to main page after successful submission
+                window.location.href = 'adminmanager.html';
+            } catch (error) {
+                console.error('Error adding new manager:', error);
+            }
+        });
+    </script>
+</body>
+</html>

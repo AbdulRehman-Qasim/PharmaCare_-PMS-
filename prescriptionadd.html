@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Prescription - Pharmacy Management System</title>
+    <link rel="stylesheet" type="text/css" href="./css/ms.css">
+    <link rel="stylesheet" href="./css/s.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./css/ta.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #423d3d;
+        
+        }
+        #content {
+            width: 90%;
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-top: 20px; 
+        }
+        #header h2 {
+            margin-top: 0;
+            padding-top: 10px;  
+        }
+        h4 {
+            margin-bottom: 20px;
+            padding-top: 10px;
+            color: #555;
+            text-align: center;
+        }
+        form {
+            max-width: 100%;
+            margin: auto;
+            
+        }
+        label {
+            padding-left: 6px;
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-container {
+        padding-left: 3.5px; /* Adjust the padding value as needed */
+        }
+        .input-container1 {
+        padding-left: 3.5px; /* Adjust the padding value as needed */
+        }  
+        .input-container2 {
+        padding-left: 3.5px; /* Adjust the padding value as needed */
+        }  
+        .input-container3 {
+        padding-left: 3.5px; /* Adjust the padding value as needed */
+        }      
+
+        
+        input[type="text"],
+        input[type="datetime-local"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 22%;
+            
+            box-sizing: border-box;
+            position: relative;
+            bottom: 0px;
+            left: 38%;
+            top: 10px;
+            
+        }
+        input[type="submit"]:hover {
+            background: #218838;
+        }
+    </style>
+    <script>
+        function createPrescription(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('http://localhost:3000/prescriptions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.prescription) {
+                    
+                    window.location.href = 'priscrition.html'; 
+                } else {
+                    console.error('Error creating prescription:', data.error);
+                }
+            })
+            .catch(error => console.error('Error creating prescription:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('createPrescriptionForm').addEventListener('submit', createPrescription);
+        });
+    </script>
+</head>
+<body>
+    <div id="content">
+        <div id="header">
+            <h2>Pharmacy Management System</h2>
+        </div>
+        <div id="main">
+            <h4>Create New Prescription</h4>
+            <hr/>
+            <form id="createPrescriptionForm">
+                <label for="customer_name">Customer Name:</label>
+                <div class="input-container">
+                    <input type="text" id="customer_name" name="customer_name" required>
+                </div>
+                
+                
+                <label for="prescription_id">Prescription No:</label>
+                <div class="input-container1">
+                <input type="text" id="prescription_id" name="prescription_id" required>
+                </div>
+
+                <label for="invoice_id">Invoice No:</label>
+                <div class="input-container2">
+                <input type="text" id="invoice_id" name="invoice_id" required>
+                 </div> 
+
+                <label for="date">Date:</label>
+                <div class="input-container3">
+                <input type="datetime-local" id="date" name="date" required>
+                </div> 
+                
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

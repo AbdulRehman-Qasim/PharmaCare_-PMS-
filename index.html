@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pharmacy Management System</title>
+    <link rel="stylesheet" type="text/css" href="./css/ms.css">
+    <style>
+        #content {
+            height: auto;
+        }
+
+        #main {
+            height: auto;
+        }
+
+        .login {
+            text-align: center;
+        }
+
+        .login img {
+            width: 150px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%;
+           padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .submit input {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit input:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const position = document.querySelector('select[name="position"]').value;
+            if (position === 'Admin') {
+                window.location.href = 'admin1.html';
+            } else if (position === 'Manager') {
+                window.location.href = 'manager.html';
+            } else if (position === 'Pharmacist') {
+                window.location.href = 'armasist.html';
+            } else if (position === 'Cashier') {
+                window.location.href = 'cashier.html';
+            } else {
+                alert('Please select a valid user role!');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="content">
+        <div id="header">
+            <h1>Pharmacy Management System</h1>
+        </div>
+        <div id="main">
+            <section class="container">
+                <div class="login">
+                    <img src="pharma icon.jpg" alt="Pharmacy Icon">
+                    <form onsubmit="handleLogin(event)">
+                        <input type="text" name="username" placeholder="Username" required>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <select name="position" required>
+                            <option value="">Login as...</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Pharmacist">Pharmacist</option>
+                            <option value="Cashier">Cashier</option>
+                        </select>
+                        <p class="submit"><input type="submit" value="Login"></p>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <div id="footer" align="Center"></div>
+    </div>
+</body>
+
+</html>
