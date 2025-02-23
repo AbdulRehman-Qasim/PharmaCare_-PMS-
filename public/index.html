@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pharmacy Management System</title>
+    <link rel="stylesheet" type="text/css" href="css/ms.css">
+    <link rel="stylesheet" href="css/s.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/ta.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <style>
+        #left-column { height: 477px; }
+        #main { height: 477px; }
+        .scroll { height: 380px; overflow: scroll; }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div id="header">
+            <h1>Pharmacy Management System</h1>
+        </div>
+        <div id="left_column">
+            <div id="button">
+                <ul>
+                    <li><a href=""><i class="fa fa-home"></i>&nbsp; Dashboard</a></li>
+                    <li><a href=""><i class="fa fa-prescription-bottle-alt"></i>&nbsp;&nbsp; Pharmacist</a></li>
+                    <li><a href=""><i class="fa fa-user-cog"></i>&nbsp;Manager</a></li>
+                    <li><a href=""><i class="fa fa-cash-register"></i>&nbsp; Cashier</a></li>
+                    <li><a href=""><i class="fa fa-database"></i>&nbsp; Local Data</a></li>
+                    <li><a href=""><i class="fa fa-server"></i>&nbsp; Global Data</a></li>
+                    <li><a href=""><i class="fa fa-power-off"></i>&nbsp; Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            <div id="tabbed_box" class="tabbed_box">
+                <h4>Manage Pharmacist</h4>
+                <hr/>
+                <div class="tabbed_area">
+                    <ul class="tabs">
+                        <li><a href="#" class="active" id="viewUsersBtn">View User</a></li>
+                        <li><a href="#">Add User</a></li>
+                    </ul>
+                    <div class="scroll">
+                        <div id="content_1" class="content" style="display: block;">
+                            <!-- Pharmacists will be listed here -->
+                        </div>
+                        <div id="content_2" class="content" style="display: none;">
+                            <!-- Add User form will go here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer" align="Center"></div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
