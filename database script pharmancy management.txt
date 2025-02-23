@@ -1,0 +1,199 @@
+CREATE TABLE prescription (
+  
+  prescription_id INT NOT NULL,
+  customer_name VARCHAR(30) NOT NULL,
+  invoice_id SMALLINT NOT NULL,
+  date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (prescription_id)
+);
+
+INSERT INTO prescription (prescription_id, customer_name, invoice_id, date) VALUES
+(1002, 'Ahmed', 13, '2018-02-10 12:25:19'),
+(1003, 'Andrew H Hussain', 18, '2018-02-12 19:20:44'),
+(1004, 'Deborah', 19, '2018-02-12 20:34:50');
+
+select * from prescription
+
+CREATE TABLE pharmacist (
+    pharmacist_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(15) NOT NULL,
+    last_name VARCHAR(15) NOT NULL,
+    staff_id VARCHAR(10) NOT NULL,
+    postal_address VARCHAR(20) NOT NULL,
+    phone VARCHAR(12) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    username VARCHAR(10) NOT NULL,
+    password VARCHAR(10) NOT NULL,
+    date TIMESTAMP NOT NULL
+);
+
+
+-- Dumping data for table pharmacist
+INSERT INTO pharmacist (pharmacist_id, first_name, last_name, staff_id, postal_address, phone, email, username, password, date) VALUES
+(24, 'Ahmed', 'Hussain', 'PMS24', 'Michikan', '7896541230', 'ahmed.hussain@example.com', 'pharmacist', 'password', '2018-04-14 12:35:25'),
+(25, 'Nadir', 'Rizvi', 'PMS52', 'Michikan', '9754448500', 'nadir.rizvi@example.com', 'nadir', 'pass', '2018-04-14 12:39:40'),
+(26, 'Ali', 'Malik', 'PMS29', 'Durham', '1257888880', 'ali.malik@example.com', 'ali', 't0m@#$%', '2018-04-14 12:40:33'),
+(27, 'Sana', 'Khan', 'PMS00', 'Ladora', '7894561320', 'sana.khan@example.com', 'sana', 'teri', '2018-04-14 12:45:07'),
+(28, 'Junaid', 'Abbasi', 'PMS28', 'Fullerton', '1378554540', 'junaid.abbasi@example.com', 'junaid', 'pass@w', '2018-04-14 12:45:56'),
+(29, 'Saeed', 'Ahmed', 'PMS69', 'Newark', '5210000069', 'saeed.ahmed@example.com', 'saeed', 'thompsonpw', '2018-04-14 12:46:52'),
+(30, 'Ayesha', 'Turner', 'PMS16', 'Ladora', '6969696969', 'ayesha.turner@example.com', 'ayesha', 'password', '2018-04-14 12:48:41'),
+(31, 'Raza', 'Khan', 'PMS84', 'Oregoon', '2478881000', 'raza.khan@example.com', 'raza', 'pass', '2018-04-14 12:49:52'),
+(32, 'Rehana', 'Miers', 'PMS96', 'Michikan', '6545552220', 'rehana.miers@example.com', 'rehana', 'r0s@', '2018-04-14 12:51:44');
+
+select * from pharmacist
+
+CREATE TABLE IF NOT EXISTS manager (
+  manager_id SMALLINT NOT NULL,
+  first_name VARCHAR(25) NOT NULL,
+  last_name VARCHAR(25) NOT NULL,
+  staff_id VARCHAR(20) NOT NULL,
+  postal_address VARCHAR(30) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  username VARCHAR(15) NOT NULL,
+  password VARCHAR(15) NOT NULL,
+  date TIMESTAMP NOT NULL,
+  PRIMARY KEY (manager_id)
+);
+
+-- Dumping data for table manager
+INSERT INTO manager (manager_id, first_name, last_name, staff_id, postal_address, phone, email, username, password, date) VALUES
+(1, 'Mohammad', 'Ali', 'sam/pharm', 'BleckerSt', '8542226996', 'mo.ali@example.com', 'manager', 'password', '2018-01-10 14:09:03');
+
+select * from manager
+
+CREATE TABLE IF NOT EXISTS stocks (
+  stock_id SMALLINT NOT NULL,
+  drug_name VARCHAR(50) NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  description VARCHAR(50) NOT NULL,
+  company VARCHAR(50) NOT NULL,
+  supplier VARCHAR(50) NOT NULL,
+  quantity INTEGER NOT NULL,
+  cost INTEGER NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  date_supplied DATE NOT NULL,
+  PRIMARY KEY (stock_id)
+);
+
+-- Dumping data for table stock
+INSERT INTO stocks (stock_id, drug_name, category, description, company, supplier, quantity, cost, status, date_supplied) VALUES
+(5, 'Piriton', 'tablet', 'Painkiller', 'SB', 'SB Pharma', 1000, 5, 'Available', '2018-03-30'::DATE),
+(6, 'Dual Cotexin', 'tablet', 'Malaria', 'GX Pharma', 'Clinix Pharmaceuticals', 150, 120, 'Available', '2018-03-30'::DATE),
+(7, 'Naproxen', 'Tablet', 'Reproductive', 'Family Health', 'Stopes Pharmaceuticals', 250, 250, 'Available', '2018-03-30'::DATE),
+(8, 'Flagi', 'tablet', 'Digestive', 'GX Pharma', 'Clinix Pharmaceuticals', 657, 15, 'Available', '2018-03-30'::DATE),
+(9, 'Actal', 'Tablet', 'Stomach Relieve', 'GX Pharma', 'Clinix Pharmaceuticals', 1000, 1, 'Available', '2018-03-06'::DATE);
+
+ALTER TABLE stocks
+ALTER COLUMN drug_name TYPE VARCHAR(50);
+
+select * from stocks
+
+-- Indexes for stocks table
+CREATE INDEX idx_drug_name ON stocks (drug_name);
+CREATE INDEX idx_category ON stocks (category);
+CREATE INDEX idx_supplier ON stocks (supplier);
+CREATE INDEX idx_status ON stocks (status);
+
+-- Stored procedure to get prescriptions by customer name
+CREATE OR REPLACE FUNCTION GetPrescriptionsByCustomer(customer VARCHAR)
+RETURNS TABLE (
+    prescription_id INT,
+    customer_name VARCHAR,
+    invoice_id SMALLINT,
+    date TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT * FROM prescription
+    WHERE customer_name = customer;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to update last_updated timestamp
+CREATE OR REPLACE FUNCTION update_last_updated_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.last_updated = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to call the function on update
+CREATE TRIGGER update_last_updated
+BEFORE UPDATE ON stocks
+FOR EACH ROW
+EXECUTE FUNCTION update_last_updated_column();
+
+
+
+-- Example view on the stocks table
+CREATE VIEW available_stocks AS
+SELECT
+  stock_id,
+  drug_name,
+  category,
+  description,
+  company,
+  supplier,
+  quantity,
+  cost,
+  status,
+  date_supplied,
+  last_updated
+FROM
+  stocks
+WHERE
+  status = 'Available';
+
+
+-- Function to check date_supplied
+CREATE OR REPLACE FUNCTION check_date_supplied()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.date_supplied < CURRENT_DATE THEN
+    RAISE EXCEPTION 'date_supplied must be on or after the current date';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to call the function before insert
+CREATE TRIGGER check_date_supplied_before_insert
+BEFORE INSERT ON stocks
+FOR EACH ROW
+EXECUTE FUNCTION check_date_supplied();
+
+-- Function to update last_updated timestamp
+CREATE OR REPLACE FUNCTION update_last_updated_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.last_updated = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger to call the function on update
+CREATE TRIGGER update_last_updated
+BEFORE UPDATE ON stocks
+FOR EACH ROW
+EXECUTE FUNCTION update_last_updated_column();
+
+
+ALTER TABLE prescription
+ADD CONSTRAINT check_invoice_id_non_negative CHECK (invoice_id >= 0);
+
+-- Create trigger on date column
+CREATE OR REPLACE FUNCTION check_date_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.date > CURRENT_TIMESTAMP THEN
+        RAISE EXCEPTION 'Date cannot be in the future';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER ensure_date_past
+BEFORE INSERT OR UPDATE ON prescription
+FOR EACH ROW EXECUTE FUNCTION check_date_trigger();
